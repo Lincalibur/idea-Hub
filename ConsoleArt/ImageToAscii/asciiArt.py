@@ -30,4 +30,4 @@ def image_to_ascii(image_path, output_file, width=100):
         file.write(ascii_str)
 
 # Usage example
-image_to_ascii('ConsoleArt/bugatti.jpg', 'ConsoleArt/Output.txt', width=100)
+image_to_ascii('ConsoleArt/ImageToAscii/bugatti.jpg', 'ConsoleArt/ImageToAscii/Output.txt', width=100)
