@@ -10,7 +10,8 @@ This repo is a playground for testing out new and exciting app concepts. Some of
 - **Status**: Very experimental. Expect bugs, incomplete features, and wild ideas.
 
 ## 📂 Structure
-Each directory contains a different experiment or app concept. Feel free to explore, contribute, or just poke around.
+- **Directories**: Each directory contains a different experiment or app concept. Please make use of README files within each directory to clarify the idea and provide any necessary details.
+- **Branches**: New ideas should be stored in separate branches before being merged into the `main` branch. This keeps things organized and allows for easier experimentation.
 
 ## 🚧 Disclaimer
 This repository is a work in progress, and not everything is expected to work perfectly (or at all!). Use at your own risk.
