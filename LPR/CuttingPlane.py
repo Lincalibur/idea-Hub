@@ -15,31 +15,47 @@ def parse_input(input_str):
     
     return coefficients
 
-def process_coefficients(coefficients):
+def adjust_negative_fractions(coefficients):
     """
-    Process coefficients according to the specified rules.
+    Adjust negative fractional coefficients to the next largest whole number.
     """
-    lhs_terms = []
-    rhs_terms = []
-    rhs_value = 0.0
+    adjusted_coefficients = {}
+    whole_terms = []
+    fractional_terms = []
 
     for var, coeff in coefficients.items():
         whole_part = int(coeff)
         fractional_part = coeff - whole_part
         
-        # Split into fractional and whole parts
+        if fractional_part < 0:
+            # If the fractional part is negative, adjust to the next largest negative whole number
+            new_whole_part = whole_part - 1
+            new_fractional_part = fractional_part + 1
+            adjusted_coefficients[var] = (new_whole_part, new_fractional_part)
+        else:
+            adjusted_coefficients[var] = (whole_part, fractional_part)
+    
+    return adjusted_coefficients
+
+def construct_equation(adjusted_coefficients):
+    """
+    Construct the equations based on adjusted coefficients.
+    """
+    lhs_terms = []
+    rhs_terms = []
+    fractional_rhs = 0.0
+
+    for var, (whole_part, fractional_part) in adjusted_coefficients.items():
         if fractional_part != 0:
             lhs_terms.append(f"{fractional_part:+.2f} {var}")
         if whole_part != 0:
-            rhs_terms.append(f"{-whole_part:+.2f} {var}")
-            rhs_value += whole_part
+            rhs_terms.append(f"{-whole_part:+d} {var}")
+            fractional_rhs += fractional_part
 
-    # Set all fractional parts on LHS to equal the fractional RHS
-    lhs_equation = " + ".join(lhs_terms) + f" = {rhs_value - int(rhs_value):.2f}"
-    rhs_terms_equation = " + ".join(rhs_terms) + f" + {rhs_value - int(rhs_value):.2f}"
-    inequality_equation = " + ".join(lhs_terms) + f" + {rhs_value - int(rhs_value):.2f} <= 0"
+    lhs_equation = " + ".join(lhs_terms) + " = 0"
+    inequality_equation = " + ".join(lhs_terms) + f" <= {-fractional_rhs:.2f}"
 
-    return lhs_equation, rhs_terms_equation, inequality_equation
+    return lhs_equation, inequality_equation
 
 def main():
     # Prompt the user for input
@@ -49,10 +65,13 @@ def main():
     coefficients = parse_input(input_str)
     print("Parsed coefficients:", coefficients)
 
-    # Process the coefficients
-    lhs_equation, rhs_terms_equation, inequality_equation = process_coefficients(coefficients)
+    # Adjust negative fractions to next largest negative whole number
+    adjusted_coefficients = adjust_negative_fractions(coefficients)
+    print("Adjusted coefficients:", adjusted_coefficients)
+
+    # Construct the resulting equations
+    lhs_equation, inequality_equation = construct_equation(adjusted_coefficients)
     print("Resulting LHS equation:", lhs_equation)
-    print("Resulting RHS terms equation:", rhs_terms_equation)
     print("Resulting inequality:", inequality_equation)
 
 # Run the main function
